@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Gmail System Theme AutoSync",
+  "version": "1.0.0",
+  "description": "Automatically syncs Gmail's theme with your system preferences. Seamlessly switches between light and dark mode based on your system settings, providing a consistent and comfortable email experience.",
+  "author": "Your Name",
+  "homepage_url": "https://github.com/yourusername/gmail-system-theme",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "contentScript.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "64": "images/icon64.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "64": "images/icon64.png",
+    "128": "images/icon128.png"
+  },
+  "minimum_chrome_version": "88",
+  "offline_enabled": true,
+  "incognito": "split"
+}
