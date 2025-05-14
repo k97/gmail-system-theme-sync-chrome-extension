@@ -3,8 +3,8 @@
   "name": "Gmail System Theme AutoSync",
   "version": "1.0.0",
   "description": "Automatically syncs Gmail's theme with your system preferences. Seamlessly switches between light and dark mode based on your system settings, providing a consistent and comfortable email experience.",
-  "author": "Your Name",
-  "homepage_url": "https://github.com/yourusername/gmail-system-theme",
+  "author": "k97",
+  "homepage_url": "https://github.com/k97/gmail-system-theme-sync-chrome-extension",
   "permissions": [
     "activeTab",
     "scripting"

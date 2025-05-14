@@ -84,4 +84,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by [Karthik]
+Made with ❤️ by [rkarthik.co](https://rkarthik.co) using [Claude.ai](https://claude.ai).
+
+```
+
+```
