@@ -1,15 +1,15 @@
 /**
- * Gmail Dark Mode Theme Manager
+ * Gmail Theme Sync & Control
  *
- * This script automatically applies dark mode to Gmail based on system preferences.
- * It uses CSS filters to invert colors and maintain image/video visibility.
+ * This script manages Gmail's theme based on user preferences or system settings.
+ * By default, it syncs with the system theme, but also supports manual Light and Dark mode selection.
  */
 
 // ============================================================================
 // Constants
 // ============================================================================
 
-const STYLE_ID = 'gmail-dark-mode-style';
+const STYLE_ID = 'gmail-theme-style';
 const DARK_MODE_STYLES = `
   /* Invert the entire page */
   html {
@@ -52,8 +52,10 @@ const createDarkModeStyle = () => {
  */
 const applyDarkMode = () => {
   try {
+    removeDarkMode();
     const styleElement = createDarkModeStyle();
     document.head.appendChild(styleElement);
+    console.log('Dark mode applied');
   } catch (error) {
     console.error('Failed to apply dark mode:', error);
   }
@@ -67,6 +69,7 @@ const removeDarkMode = () => {
     const existingStyle = document.getElementById(STYLE_ID);
     if (existingStyle) {
       existingStyle.remove();
+      console.log('Dark mode removed');
     }
   } catch (error) {
     console.error('Failed to remove dark mode:', error);
@@ -77,12 +80,35 @@ const removeDarkMode = () => {
 // Theme Management Functions
 // ============================================================================
 
+let currentTheme = 'system';
+let isPaused = false;
+
 /**
- * Updates the theme based on system color scheme preference
- * @param {MediaQueryListEvent} mediaQueryEvent - The media query event containing the color scheme preference
+ * Updates the theme based on the selected mode
+ * @param {string} theme - The theme to apply ('light', 'dark', 'system', or 'default')
  */
-const updateTheme = (mediaQueryEvent) => {
-  if (mediaQueryEvent.matches) {
+const updateTheme = (theme) => {
+  if (theme === 'default') {
+    removeDarkMode();
+    console.log('Theme reset to Gmail default');
+    return;
+  }
+  if (isPaused) {
+    console.log('Theme change ignored: extension is paused');
+    return;
+  }
+  console.log('Updating theme to:', theme);
+  currentTheme = theme;
+
+  if (theme === 'system') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    console.log('System theme is:', isDarkMode ? 'dark' : 'light');
+    if (isDarkMode) {
+      applyDarkMode();
+    } else {
+      removeDarkMode();
+    }
+  } else if (theme === 'dark') {
     applyDarkMode();
   } else {
     removeDarkMode();
@@ -90,20 +116,78 @@ const updateTheme = (mediaQueryEvent) => {
 };
 
 /**
- * Initializes the theme manager by:
- * 1. Setting up the initial theme based on system preference
- * 2. Adding a listener for system theme changes
+ * Handles system theme changes when in system mode
+ * @param {MediaQueryListEvent} mediaQueryEvent - The media query event
+ */
+const handleSystemThemeChange = (mediaQueryEvent) => {
+  if (isPaused) {
+    console.log('System theme change ignored: extension is paused');
+    return;
+  }
+  console.log('System theme changed:', mediaQueryEvent.matches ? 'dark' : 'light');
+  if (currentTheme === 'system') {
+    updateTheme('system');
+  }
+};
+
+/**
+ * Handles pause/resume state
+ * @param {boolean} paused
+ */
+const setPaused = (paused) => {
+  isPaused = paused;
+  if (isPaused) {
+    removeDarkMode();
+    console.log('Extension paused: theme changes disabled');
+  } else {
+    // Re-apply the current theme from storage to ensure correct theme is applied
+    chrome.storage.sync.get(['themePreference'], (result) => {
+      const savedTheme = result.themePreference || 'system';
+      currentTheme = savedTheme;
+      updateTheme(savedTheme);
+      console.log('Extension resumed: theme changes enabled and theme re-applied');
+    });
+  }
+};
+
+/**
+ * Initializes the theme manager
  */
 const initializeThemeManager = () => {
   try {
-    // Get system color scheme preference
-    const systemColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-    // Apply initial theme
-    updateTheme(systemColorScheme);
+    console.log('Initializing theme manager');
+    // Get saved theme preference and pause state, defaulting to system and not paused
+    chrome.storage.sync.get(['themePreference', 'themePaused'], (result) => {
+      isPaused = !!result.themePaused;
+      const savedTheme = result.themePreference || 'system';
+      currentTheme = savedTheme;
+      if (!isPaused) {
+        updateTheme(savedTheme);
+      } else {
+        removeDarkMode();
+      }
+    });
 
     // Listen for system theme changes
-    systemColorScheme.addEventListener('change', updateTheme);
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
+
+    // Listen for theme change and pause state messages from popup
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'themeChanged') {
+        updateTheme(message.theme);
+        sendResponse && sendResponse({
+          success: true
+        });
+      }
+      if (message.action === 'themePauseState') {
+        setPaused(!!message.paused);
+        sendResponse && sendResponse({
+          success: true
+        });
+      }
+      return true;
+    });
   } catch (error) {
     console.error('Failed to initialize theme manager:', error);
   }

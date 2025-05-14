@@ -1,120 +1,354 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Gmail System Theme Sync</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Theme Sync & Control</title>
   <style>
+    /* Base Styles */
     body {
-      width: 300px;
-      padding: 20px;
+      width: 380px;
       margin: 0;
+      padding: 10px;
       font-family: 'Google Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      color: #202124;
-      background-color: #ffffff;
+      background: #f7f8fa;
+      color: #222;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .container {
+    /* Card Container */
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      box-shadow: 0 2px 16px rgba(60, 64, 67, 0.10);
+      padding: 32px 28px 24px 28px;
+      width: 95%;
+      max-width: 400px;
+      min-width: 320px;
+      min-height: 300px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      position: relative;
     }
 
-    .header {
+    /* Header Section */
+    .top-row {
+      width: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+      justify-content: space-between;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .icon {
-      width: 48px;
-      height: 48px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 18px;
+    .title {
+      font-size: 1.02rem;
       font-weight: 500;
-      color: #202124;
+      color: #54585D;
+      margin: 0;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
     }
 
-    .description {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #5f6368;
-      margin-bottom: 16px;
-    }
-
-    .status {
+    /* Pause Button */
+    .pause-btn {
+      width: 44px;
+      height: 44px;
+      background: #f7f8fa;
+      border: 2px solid #bdbdbd;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background-color: #f8f9fa;
-      border-radius: 8px;
+      justify-content: center;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+      outline: none;
+      position: relative;
+      box-shadow: 0 1px 4px rgba(60, 64, 67, 0.06);
+    }
+
+    .pause-btn svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    /* Pause Button Icons */
+    .pause-btn .icon-pause circle {
+      stroke: #bdbdbd;
+      stroke-width: 2;
+      fill: #fff;
+    }
+
+    .pause-btn .icon-pause rect {
+      fill: #bdbdbd;
+    }
+
+    .pause-btn .icon-play circle {
+      stroke: #43d854;
+      stroke-width: 2;
+      fill: #fff;
+    }
+
+    .pause-btn .icon-play polygon {
+      fill: #43d854;
+    }
+
+    /* Tooltip */
+    .pause-btn .tooltip {
+      visibility: hidden;
+      opacity: 0;
+      background: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      padding: 4px 8px;
+      position: absolute;
+      z-index: 10;
+      top: 48px;
+      right: 50%;
+      transform: translateX(50%);
       font-size: 13px;
-      color: #5f6368;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      white-space: nowrap;
     }
 
-    .status-icon {
-      width: 16px;
-      height: 16px;
+    .pause-btn:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
     }
 
+    /* Description */
+    .description {
+      margin: 24px 0 30px;
+      font-size: 0.96rem;
+      color: #6d6d6d;
+      text-align: center;
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 97%;
+    }
+
+    /* Theme Control Section */
+    .theme-label {
+      font-size: 0.9rem;
+      color: #888;
+      font-weight: 400;
+      margin: 0 0 8px 0;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+
+    .theme-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+    }
+
+    /* Segment Control */
+    .segment-control {
+      display: flex;
+      background: #f4f6fa;
+      border-radius: 20px;
+      border: 3px solid #f0f1f3;
+      box-shadow: 0 2px 8px rgba(60, 64, 67, 0.06);
+      padding: 8px;
+      width: 250px;
+      max-width: 90%;
+      margin: 0 auto;
+      gap: 0;
+    }
+
+    .segment-option {
+      flex: 1 1 0;
+      padding: 12px 0;
+      cursor: pointer;
+      border-radius: 14px;
+      font-size: 1.0rem;
+      font-weight: 400;
+      min-width: 0;
+      text-align: center;
+      white-space: nowrap;
+      transition: all 0.18s;
+      color: #222;
+      background: none;
+      border: none;
+      outline: none;
+      margin: 0 2px;
+      letter-spacing: 0.01em;
+    }
+
+    .segment-option.active {
+      background: #fff;
+      color: #1a73e8;
+      box-shadow: 0 1px 4px rgba(60, 64, 67, 0.08);
+    }
+
+    /* Footer */
     .footer {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #5f6368;
+      margin-top: 32px;
+      font-size: 13px;
+      color: #aaa;
+      text-align: center;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      font-family: 'SF Mono', 'Roboto Mono', 'Courier New', monospace;
     }
 
+    /* Responsive Design */
+    @media (max-width: 400px) {
+      .card {
+        min-width: 0;
+        padding: 16px 2vw;
+      }
+
+      .segment-control {
+        width: 98%;
+      }
+    }
+
+    /* Dark Mode */
     @media (prefers-color-scheme: dark) {
       body {
-        background-color: #202124;
+        background: #18191a;
         color: #e8eaed;
       }
 
-      h1 {
+      .card {
+        background: #23272b;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+      }
+
+      .title {
         color: #e8eaed;
       }
 
       .description {
-        color: #9aa0a6;
+        color: #b0b0b0;
       }
 
-      .status {
-        background-color: #303134;
-        color: #9aa0a6;
+      .theme-label {
+        color: #b0b0b0;
+      }
+
+      .theme-control {
+        background: none;
+      }
+
+      .segment-control {
+        background: #404245;
+        border-color: #23272b;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+
+      .segment-option {
+        color: #e8eaed;
+        background: none;
+      }
+
+      .segment-option.active {
+        background: #18191a;
+        color: #8ab4f8;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+      }
+
+      .pause-btn {
+        background: #23272b;
+        border-color: #444;
+      }
+
+      .pause-btn .icon-pause circle {
+        stroke: #444;
+        fill: #23272b;
+      }
+
+      .pause-btn .icon-pause rect {
+        fill: #444;
+      }
+
+      .pause-btn .icon-play circle {
+        stroke: #43d854;
+        fill: #23272b;
+      }
+
+      .pause-btn .icon-play polygon {
+        fill: #43d854;
       }
 
       .footer {
-        color: #9aa0a6;
+        color: #b0b0b0;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="images/icon128.png" alt="Gmail Theme Sync Icon" class="icon">
-      <h1>Gmail System Theme Sync</h1>
-    </div>
+  <div class="card">
+    <header class="top-row">
+      <div class="logo-title">
+        <img src="images/icon128.png" alt="Gmail Theme Sync and Control Icon" class="icon">
+        <h1 class="title">Gmail Theme Sync & Control</h1>
+      </div>
+      <button class="pause-btn" id="pauseBtn" aria-label="Pause extension">
+        <!-- Pause Icon (default) -->
+        <span class="icon-pause">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" />
+            <rect x="14" y="12" width="4" height="16" rx="2" />
+            <rect x="22" y="12" width="4" height="16" rx="2" />
+          </svg>
+        </span>
+        <!-- Play Icon (hidden by default) -->
+        <span class="icon-play" style="display:none;">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" />
+            <polygon points="16,13 28,20 16,27" />
+          </svg>
+        </span>
+        <span class="tooltip">Pause extension</span>
+      </button>
+    </header>
 
-    <p class="description">
-      Automatically syncs Gmail's theme with your system preferences.
-      Seamlessly switches between light and dark mode for a comfortable email experience.
-    </p>
+    <main>
+      <p class="description">
+        Automatically syncs with your system theme by default, or choose Light or Dark mode.
+        Provides a comfortable email experience that matches your preferences.
+      </p>
 
-    <div class="status">
-      <img src="images/icon16.png" alt="Status" class="status-icon">
-      <span id="status-text">Syncing with system theme</span>
-    </div>
+      <div class="theme-control" id="themeControl">
+        <h2 class="theme-label">Select Theme</h2>
+        <div class="segment-control">
+          <button class="segment-option active" data-theme="system">System</button>
+          <button class="segment-option" data-theme="light">Light</button>
+          <button class="segment-option" data-theme="dark">Dark</button>
+        </div>
+      </div>
+    </main>
 
-    <div class="footer">
-      Version 1.0.0
-    </div>
+    <footer class="footer">
+      v1.1.0
+    </footer>
   </div>
 
   <script src="popup.js"></script>

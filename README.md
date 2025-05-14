@@ -1,8 +1,8 @@
-# Gmail System Theme Sync - Chrome Extension
+# Gmail Theme Sync & Control - Chrome Extension
 
 A Chrome extension that automatically syncs Gmail's theme with your system preferences. Seamlessly switches between light and dark mode based on your system settings, providing a consistent and comfortable email experience.
 
-![Gmail System Theme Sync](images/icon128.png)
+![Gmail Theme Sync & Control](images/icon128.png)
 
 ## Features
 
@@ -57,7 +57,7 @@ The extension uses CSS filters to implement the theme switching:
 ## Limitations
 
 - The extension uses color inversion for dark mode
-- Background images in Gmail may be affected
+- Background images in Gmail may be affected but mostly works at the moment
 - Email content images, profile pictures, and label colors are preserved
 
 ## Contributing
@@ -72,10 +72,6 @@ If you find this extension helpful, consider:
 - 🐛 Reporting issues
 - 💡 Suggesting improvements
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - Inspired by the need for better Gmail theming
@@ -85,7 +81,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Made with ❤️ by [rkarthik.co](https://rkarthik.co) using [Claude.ai](https://claude.ai).
-
-```
-
-```
