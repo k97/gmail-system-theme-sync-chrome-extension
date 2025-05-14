@@ -1,6 +1,6 @@
 # Gmail Theme Sync & Control - Chrome Extension
 
-A Chrome extension that automatically syncs Gmail's theme with your system preferences. Seamlessly switches between light and dark mode based on your system settings, providing a consistent and comfortable email experience.
+An intermediate-level Chrome extension that automatically syncs Gmail's theme with your system preferences, providing a seamless dark mode experience. Seamlessly switches between light and dark mode based on your system settings, providing a consistent and comfortable email experience.
 
 ![Gmail Theme Sync & Control](images/icon128.png)
 
