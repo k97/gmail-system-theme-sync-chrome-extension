@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Gmail Theme Sync & Control",
   "version": "1.1.0",
-  "description": "Automatically syncs Gmail with your system theme by default. Optionally choose Light or Dark mode for a comfortable email experience that matches your preferences.",
+  "description": "Automatically syncs Gmail with your system theme by default and controls either light or dark mode for a easier experience.",
   "author": "k97",
   "homepage_url": "https://github.com/k97/gmail-system-theme-sync-chrome-extension",
   "permissions": [
