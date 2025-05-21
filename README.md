@@ -6,7 +6,7 @@ An intermediate-level Chrome extension that automatically syncs Gmail's theme wi
 
 ## Features
 
-- 🔄 Automatic theme synchronization with system preferences
+- 🔄 Automatic theme synchronisation with system preferences
 - 🌙 Smooth dark mode experience
 - ☀️ Seamless light mode transition
 - 🎨 Preserves image quality in emails
@@ -17,7 +17,7 @@ An intermediate-level Chrome extension that automatically syncs Gmail's theme wi
 
 ### From Chrome Web Store
 
-1. Visit the [Chrome Web Store](https://chrome.google.com/webstore) (coming soon)
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/gmail-theme-sync-control/kipklpaepncabfkopgefpnmnjldichab?authuser=0&hl=en-AU)
 2. Click "Add to Chrome"
 3. Confirm the installation
 
@@ -45,7 +45,7 @@ The extension uses CSS filters to implement the theme switching:
 - Inverts colors for dark mode
 - Preserves image quality in emails
 - Maintains readability of all content
-- Optimized for performance
+- Optimised for performance
 
 ## Browser Compatibility
 
